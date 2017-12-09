@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class HistoryEntry {
-    private final long timestamp;
+    private final Long timestamp;
     private final Integer amount;
     
     public HistoryEntry(long time, int amount){
@@ -16,7 +16,7 @@ public class HistoryEntry {
     public Integer getAmount() {
         return amount;
     }
-    public long getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
     public void print(){

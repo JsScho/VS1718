@@ -17,9 +17,6 @@ public class Food {
     public String getName() {
         return name;
     }
-    public void addHistoryEntry(long timestamp, Integer newAmount){
-        fillHistory.add(new HistoryEntry(timestamp,newAmount));
-    }
     public List<HistoryEntry> getFillHistory(){
         return fillHistory;
     }

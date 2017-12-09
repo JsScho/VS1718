@@ -100,22 +100,41 @@ public class Refrigerator {
             rwlock.readLock().unlock();
         }
     }
-    
+
     public void addHistoryEntry(String foodname,Integer amount,Long time){
         rwlock.writeLock().lock();
         try{
             for(Food f : content){
                 if(f.getName().equals(foodname)){
-                    HistoryEntry previousEntry = f.getFillHistory().get(f.getFillHistory().size()-1);
-                    if (!previousEntry.getAmount().equals( amount ) && 
-                            !(Long.valueOf(previousEntry.getTimestamp()) >= (time))){ //checkDuplicate
-                        f.addHistoryEntry(time, amount);
+                    
+                    List<HistoryEntry> history = f.getFillHistory();
+                    
+                    for (Integer i=history.size()-1; i>=0; --i){
+                        if (history.get(i).getTimestamp() > time  //Der einzufügende Eintrag ist älter als alle bisherigen
+                                && i.equals(0) 
+                                && !amount.equals(history.get(0).getAmount())){
+                            history.add(0, new HistoryEntry(time,amount));
+                            return;
+                        }
+                        else if (history.get(i).getTimestamp() > time){
+                            continue;
+                        }
+                        else if (history.get(i).getTimestamp() < time){  //Der einzufügende Eintrag ist neuer als alle bisherigen
+                            if (i.equals(history.size()-1) && !amount.equals(history.get(i).getAmount())){
+                                history.add(new HistoryEntry(time,amount));
+                                return;
+                            }
+                            else if( !amount.equals(history.get(i).getAmount())  //der einzufügende Eintrag ist neuer als der verglichene
+                                    && !amount.equals(history.get(i+1).getAmount())){
+                                history.add(i+1,new HistoryEntry(time,amount));
+                                return;
+                            }
+                        } 
                     }
-                    return;
                 }
             };
             Food food = new Food(new String(foodname));
-            food.addHistoryEntry(time, amount);
+            food.getFillHistory().add(new HistoryEntry(time, amount));
             content.add(food);
         }
         finally{

@@ -51,14 +51,19 @@ public class RefrigeratorTest {
         refrigerator.addHistoryEntry("Milch", 1000, time);
         assertEquals("Adding duplicate entry",1,refrigerator.getContent().get(0).getFillHistory().size());
         
-        refrigerator.addHistoryEntry("Milch", 1300, time-100);
-        assertEquals("Adding entry that is older than an already existing entry",1,refrigerator.getContent().get(0).getFillHistory().size());
+        refrigerator.addHistoryEntry("Milch", 950, time);
+        assertEquals("Adding an entry with different amount but same timestamp as an existing entry",1,refrigerator.getContent().get(0).getFillHistory().size());
         
-        refrigerator.addHistoryEntry("Milch", 1000, time-100);
-        assertEquals("Adding entry with same amount that is older than last entry",1,refrigerator.getContent().get(0).getFillHistory().size());
+        refrigerator.addHistoryEntry("Milch", 1300, time-100);
+        assertEquals("Adding entry that is older than an already existing entry",2,refrigerator.getContent().get(0).getFillHistory().size());
+        
+        refrigerator.addHistoryEntry("Milch", 1000, time-50);
+        assertEquals("Adding entry with same amount that is older than last entry",2,refrigerator.getContent().get(0).getFillHistory().size());
         
         refrigerator.addHistoryEntry("Milch", 1000, time+100);
-        assertEquals("Adding entry with same amount that is newer than last entry",1,refrigerator.getContent().get(0).getFillHistory().size());
+        assertEquals("Adding entry with same amount that is newer than last entry",2,refrigerator.getContent().get(0).getFillHistory().size());
 
+        refrigerator.addHistoryEntry("Milch", 1200, time+100);
+        assertEquals("Adding entry that is newer than last entry",3,refrigerator.getContent().get(0).getFillHistory().size());        
     }    
 }
