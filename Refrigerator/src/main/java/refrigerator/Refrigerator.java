@@ -61,11 +61,6 @@ public class Refrigerator {
                     addHistoryEntry(sc.next(),sc.nextInt(),sc.nextLong());
                     break;
                 }
-                case "info":{
-                    printContent();
-                    printHistory();
-                    break;
-                }
             }
         } catch (Exception e){
             System.out.println("Received a command but failed to execute it.");
@@ -128,6 +123,7 @@ public class Refrigerator {
         }
     }
     
+    /*
     public void printHistory(){
         rwlock.readLock().lock();
         try{
@@ -152,7 +148,8 @@ public class Refrigerator {
             rwlock.readLock().unlock();
         }
     }    
-
+    */
+    
     private ReadWriteLock ReentrantReadWriteLock() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

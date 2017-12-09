@@ -1,6 +1,6 @@
 export showHistoryEntries="20"
 
-export refrigeratorIP="192.168.43.186"
+export refrigeratorIP="172.16.205.159"
 
 createRefrigerator(){
 	java -jar refrigerator.jar $1 &

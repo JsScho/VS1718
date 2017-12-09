@@ -25,7 +25,7 @@ public class SensorServerThread implements Runnable {
             try{
                 DatagramPacket udpPacket = new DatagramPacket(buf,buf.length);
                 udpSocket.receive(udpPacket);
-                printPacketData(udpPacket);
+                //printPacketData(udpPacket);
                 refrigerator.parseCommand(new String(udpPacket.getData()));
             } catch(IOException e){
                 System.out.println("Failed to receive package or to inform Refrigerator.");
