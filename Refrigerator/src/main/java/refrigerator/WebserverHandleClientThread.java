@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 
 public class WebserverHandleClientThread implements Runnable{
@@ -23,6 +22,7 @@ public class WebserverHandleClientThread implements Runnable{
         try{
             HttpRequestHeader header = new HttpRequestHeader();
             header.readHeader(clientSocket.getInputStream());
+            System.out.println();
             header.printHeader();
             analyseHeader( header );
         } catch (NoSuchElementException e){
@@ -33,19 +33,30 @@ public class WebserverHandleClientThread implements Runnable{
     }
     
     public void analyseHeader(HttpRequestHeader header){
+        if (header.getHttpMethod() == null || header.getHttpVersion() == null || header.getFilePath() == null){
+            sendResponse(400,null);
+            return;
+        }
         switch (header.getHttpMethod()){
             case "GET":
-                if(header.getField("Accept").contains("text/html") || header.getField("Accept").contains("text/*")){
+                if(header.getField("Accept") == null){
+                    sendResponse(400,null);
+                    break;
+                }
+                if (header.getField("Accept").contains("text/html") || header.getField("Accept").contains("text/*")){
                     if (header.getFilePath().equals("/") || header.getFilePath().equals("/Refrigerator.html")){
                         sendResponse(200,refrigerator.generateHtml());
+                        break;
                     }
-                    else 
+                    else {
                         sendResponse(404,null);
+                        break;
+                    }
                 }
                 else{
                     sendResponse(406,null);
-                } 
-                break;
+                    break;
+                }
             default:
                 sendResponse(405,null);
                 break;

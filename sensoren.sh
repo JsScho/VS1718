@@ -28,7 +28,7 @@ export s5_maxAmount="500"
 export s5_changeInterval="16"
 export s5_changeAmount="-7"
 
-export refrigeratorIP="172.16.205.159"
+export refrigeratorIP="172.16.205.10"
 
 createSensor(){
 	java -jar sensor.jar $1 $2 $3 $4 $5 $6 &

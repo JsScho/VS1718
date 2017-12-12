@@ -18,5 +18,16 @@ compileSensor() {
 	cd ..
 }
 
+compileResponseTest() {
+	cd ./HttpResponseTest
+	mvn package
+	cd ./target
+	mv HttpResponseTest-1.0.jar ../../responseTest.jar
+	cd ..
+	rm -rf target
+	cd ..
+}
+
 compileRefrig
 compileSensor
+compileResponseTest

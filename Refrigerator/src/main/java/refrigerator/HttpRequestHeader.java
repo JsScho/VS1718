@@ -20,15 +20,18 @@ public class HttpRequestHeader {
     public void readHeader(InputStream input) throws NoSuchElementException {
         try{
             BufferedReader inFromClient = new BufferedReader(new InputStreamReader(input));
-            
-            String statusLine = inFromClient.readLine();
+            if (!inFromClient.ready()){
+                throw new NoSuchElementException ();
+            }
+            String statusLine = readLine(inFromClient);
             Scanner sc = new Scanner(statusLine);
             httpMethod = sc.next();
             filePath = sc.next();
             httpVersion = sc.next();
             
             String tmp = null;
-            while ((tmp = inFromClient.readLine()) != null){
+            while (inFromClient.ready() ){
+                tmp = readLine(inFromClient);
                 fields.put( tmp.substring(0,tmp.indexOf(':')) , tmp.substring(tmp.indexOf(':')+2) );
             }
             
@@ -37,13 +40,55 @@ public class HttpRequestHeader {
             System.out.println(e.getLocalizedMessage());
         } catch(IndexOutOfBoundsException e){
             return;  
+        } catch (Exception e){
+            return;
+        }
+    }
+ 
+    //alternatively to readLine from bufferedReader.
+    //this doesnt block if no newline character or carraige return is found and instead returns null.
+    //reads characters until \n , \r\n or \r is found. if stream ends before that -> null String is returned
+ 
+    public String readLine(BufferedReader in){
+        try{
+            String line = "";
+            while(in.ready()){
+                Character nextChar = (char) in.read();
+                if (nextChar.equals('\n')){
+                    return line;
+                }
+                if (nextChar.equals('\r')){
+                    if (in.ready()){
+                        in.mark(1);
+                        Character next = (char) in.read();
+                        if (next.equals('\n')){
+                            return line;
+                        }
+                        else{ 
+                            in.reset();
+                            return line;
+                        }
+                    }
+                    else return line;
+                }
+                line = line.concat(nextChar.toString());
+            }
+            return null;
+        
+        } catch(Exception e){
+            System.out.println(e.getLocalizedMessage());
+            return null;
         }
     }
     
     public void printHeader(){
-    System.out.println(httpMethod+" "+filePath+" "+httpVersion);
-    for (Map.Entry<String, String> entry : fields.entrySet()) {
-            System.out.println(entry.getKey() +": "+ entry.getValue());
+        try{
+            System.out.println(httpMethod+" "+filePath+" "+httpVersion);
+            for (Map.Entry<String, String> entry : fields.entrySet()) {
+                System.out.println(entry.getKey() +": "+ entry.getValue());
+            }
+        } catch (NullPointerException e){
+            return;
         }
     }
     
