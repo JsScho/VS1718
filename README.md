@@ -7,6 +7,8 @@ Winter semester 2017/2018
 
 Smart home - Refrigerator Simulation
 
+[Tests](#tests)
+
 The simulation consists of 2 separate applications:
 
 - A sensor application which represents the actual fill level of an element stored in the refrigerator. If the fill level changes, the sensor sends a UDP packet to the refrigerator application using port 3141. the udp packet information consists of the name of the product, the the amount and the timestamp when the change to the fill level took place. The sensor application requires following parameters from command line:
@@ -30,9 +32,7 @@ start program by executing refrigerator.sh and/or sensor.sh script.
 Access refrigerator interface via web browser:
 as url type in the ip address of the refrigerator followed by :3142 (example 192.168.5.77:3142)
 
-
-
-Tests: 
+<a name="tests"></a>Tests
 
 1) Functional test: Run application as described in how to run it and check results in webbrowser. 
 
