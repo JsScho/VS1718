@@ -1,5 +1,5 @@
 export refrigeratorIP="192.168.137.53"
-export testDuration="20000"
+export testDuration="30000"
 
 createTest(){
 	java -jar responseTest.jar $1 $2 &
