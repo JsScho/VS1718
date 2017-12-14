@@ -108,7 +108,7 @@ Each element should have 6 entries in their content history.<br>
 
 Actual resulsts:
 Matched expecation.
-![resulting webpage](http://https://github.com/JsScho/VS1718/blob/master/pictures/test1Results.png)
+![resulting webpage](https://github.com/JsScho/VS1718/tree/master/pictures/test1Results.png)
 
 2) A functional Junit test for the method "addHistoryEntry" in refrigerator class. makes sure that UDP packet information received by the sensors is stored appropriatly. also test for duplicates, reordering of udp packets.
 
