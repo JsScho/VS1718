@@ -15,7 +15,8 @@ Smart home - Refrigerator Simulation
 [2 How to run it](#how_to_run)<br>
 [3 tests](#tests)<br>
 --[3.1 general test](#generalTest)<br>
-
+--[3.2 content history test](#contentHistoryTest)<br>
+--[3.3 http response quality test](#httpQualityTest)<br>
 
 
 <strong><a name="description"></a>1 Application description</strong>
