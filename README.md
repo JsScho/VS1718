@@ -7,11 +7,11 @@ Winter semester 2017/2018
 
 Smart home - Refrigerator Simulation
 
-1 Application description
-  [1.1 sensor application](#sensor)
-  [1.2 refrigerator application](#refrigerator)
-[2 How to run it](#how_to_run)
-[3 tests](#tests)
+1 Application description<br>
+--[1.1 sensor application](#sensor)<br>
+--[1.2 refrigerator application](#refrigerator)<br>
+[2 How to run it](#how_to_run)<br>
+[3 tests](#tests)<br>
 
 The simulation consists of 2 separate applications:
 
