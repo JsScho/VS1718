@@ -119,17 +119,18 @@ public class Refrigerator {
                         else if (history.get(i).getTimestamp() > time){
                             continue;
                         }
-                        else if (history.get(i).getTimestamp() < time){  //Der einzufügende Eintrag ist neuer als alle bisherigen
-                            if (i.equals(history.size()-1) && !amount.equals(history.get(i).getAmount())){
+                        else if (history.get(i).getTimestamp() < time
+                                && !(amount.equals(history.get(i).getAmount())) ){  //Der einzufügende Eintrag ist neuer als alle bisherigen
+                            if (i.equals(history.size()-1)){
                                 history.add(new HistoryEntry(time,amount));
                                 return;
                             }
-                            else if( !amount.equals(history.get(i).getAmount())  //der einzufügende Eintrag ist neuer als der verglichene
-                                    && !amount.equals(history.get(i+1).getAmount())){
+                            else if(!amount.equals(history.get(i+1).getAmount())){ //der einzufügende Eintrag ist neuer als der verglichene
                                 history.add(i+1,new HistoryEntry(time,amount));
                                 return;
                             }
-                        } 
+                        }
+                        else return;
                     }
                 }
             };
