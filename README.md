@@ -27,7 +27,7 @@ Smart home - Refrigerator Simulation
   - the initial amount of that element when the application is started
   - the max amount of that element possible (the actual amount cannot surpass this number at any time)
   - change interval in seconds: the sensor changes its fill level every x seconds to simulate food consumption over time.
-  - change amount: how much the fill level will change with every change event ( has to be negative if food is consumed )
+  - change amount: how much the fill level will change with every change event (has to be negative if food is consumed)
   - the IP address of the refrigerator (e.g. "192.168.15.2")
 
 
@@ -106,10 +106,45 @@ Each element should have 6 entries in their content history.<br>
 "Milch","Wurst" and "Wasser" should have 0,200,400,600,800,1000.<br>
 "Joghurt" and "Butter" should have 0,100,200,300,400,500.<br>
 
-Actual resulsts:
+Actual results:
 Matched expecation.
 ![resulting webpage](https://github.com/JsScho/VS1718/tree/master/pictures/test1Results.png)
 
-2) A functional Junit test for the method "addHistoryEntry" in refrigerator class. makes sure that UDP packet information received by the sensors is stored appropriatly. also test for duplicates, reordering of udp packets.
+
+<strong><a name="contentHistoryTest"></a>3.2 Content History test</strong>
+
+What is tested:
+Refrigerator method "addToContentHistory". after receiving a udp packet from one of the sensors, this method is called with parameters from udp package (sensor name, amount,timestamp).
+The refrigerator keeps a content history for each sensor, with entries ordered by time they were registered by the sensor. The newest entry in history is the current amount. When the mehod is called and the information received by the sensor is not a duplicate of an already existing entry in history, the new entry is inserted to the content history, position depending on its timestamp. 
+
+How it is tested:
+JUnit test class RefrigeratorTest. A number of method calls is performed, comparing expected with actual history length using assertEquals method. For now it is only tested, IF an entry is added to history, not at what position. Test is run automatically during compilation.
+
+Expected results:
+As described in ![RefrigeratorTest.java](https://github.com/JsScho/VS1718/blob/master/Refrigerator/src/test/java/refrigerator/RefrigeratorTest.java)
+
+Actual results:
+Matching expectation.
+
+
+<strong><a name="httpQualityTest"></a>3.3 Http quality test</strong>
+
+What is tested: 
+The webserver integrated into the refrigerator is supposed to answer Http-requests with appropriate responses. For example if the http method, the file path, the accepted formats by the client are not supported or there is a syntax error in the request, the webserver has to inform the client about that using the status code in the http reponse.
+
+How it is tested:
+The Java application HttpResponseTest included in this repository. For every test case it opens a tcp connection to the server and sends a defined http-request. the status code received is then compared to the expected status code. HttpResponseTest can be built by executing build.sh. After setting the refrigerator ip address in test.sh and starting the refrigerator application, the test can be started using test.sh.
+
+Expected results: 
+As described in ![HttpResponseTest.java (method responseQuality)](https://github.com/JsScho/VS1718/blob/master/HttpResponseTest/src/main/java/httptest/HttpResponseTest.java)
+
+Actual results:
+Matching expectation.
+
+
+
+
+
+
 
 3) A functional test: Some predefined HTTP requests with various flaws in the requests header are send to the webserver. the status code of the server http reponse is then compared to the expected value.
