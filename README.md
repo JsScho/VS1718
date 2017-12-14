@@ -17,6 +17,7 @@ Smart home - Refrigerator Simulation
 --[3.1 general test](#generalTest)<br>
 --[3.2 content history test](#contentHistoryTest)<br>
 --[3.3 http response quality test](#httpQualityTest)<br>
+--[3.4 http response quantity test](#httpQuantityTest)<br>
 
 
 <strong><a name="description"></a>1 Application description</strong>
@@ -130,22 +131,39 @@ Matching expectation.
 
 <strong><a name="httpQualityTest"></a>3.3 Http quality test</strong>
 
-What is tested: 
+What is tested: <br>
 The webserver integrated into the refrigerator is supposed to answer Http-requests with appropriate responses. For example if the http method, the file path, the accepted formats by the client are not supported or there is a syntax error in the request, the webserver has to inform the client about that using the status code in the http reponse.
 
-How it is tested:
+How it is tested:<br>
 The Java application HttpResponseTest included in this repository. For every test case it opens a tcp connection to the server and sends a defined http-request. the status code received is then compared to the expected status code. HttpResponseTest can be built by executing build.sh. After setting the refrigerator ip address in test.sh and starting the refrigerator application, the test can be started using test.sh.
 
-Expected results: 
+Expected results: <br>
 As described in ![HttpResponseTest.java (method responseQuality)](https://github.com/JsScho/VS1718/blob/master/HttpResponseTest/src/main/java/httptest/HttpResponseTest.java)
 
-Actual results:
+Actual results:<br>
 Matching expectation.
 
 
+<strong><a name="httpQuantityTest"></a>3.4 Http quantity test (performance test)</strong>
+Participating classes:<br>
+![HttpResponseTest.java](https://github.com/JsScho/VS1718/blob/master/HttpResponseTest/src/main/java/httptest/HttpResponseTest.java)<br>
+![SpamRequestsThread.java](https://github.com/JsScho/VS1718/blob/master/HttpResponseTest/src/main/java/httptest/SpamRequestsThread.java)<br>
 
+What is tested:<br>
+How many http requests the webserver is able to answer during a specified amount of time.
 
+How it is tested:<br>
+In test.sh set test duration in miliseconds.
+The Java application HttpResponseTest included in this repository. Method "quantityTest" creates 5 threads which send following http request to the server as often as they can during the specified amount of time: "GET / HTTP/1.1\r\nAccept: text/html\r\n". As tested by test 3.3, this request should make the server respond with "HTTP/1.1 200 OK". In this case the Refrigerator.html file in the body is not tested for correctness though, to be able to issue more requests.
+how many times the server answers with "HTTP/1.1 200 OK" is counted across all threads.
+also the amount the server answers with a different message is counted across all threads.
 
+Expected results:<br>
+The webserver should be able to handle 300 requests during 30 seconds.
+As the http request is a valid request, the server should always answer with 200OK and deliver the Refrigerator.html file
 
-
-3) A functional test: Some predefined HTTP requests with various flaws in the requests header are send to the webserver. the status code of the server http reponse is then compared to the expected value.
+Actual results:<br>
+Correct responses: 5045<br>
+Wrong responses: 5<br>
+The responses are a lot more than anticipated. The server should be able to respond to a lot of clients at the same time. Even higher numbers might be possible, considering that for this test I decided to run sensors, server and test on the same machine which should result in overall higher stress level for each process.
+However 5 times the server did not respond with the desired response "HTTP/1.1 200 OK". Further testing has to reveal what happend during those cases.
