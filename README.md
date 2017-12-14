@@ -51,10 +51,10 @@ as url type in the ip address of the refrigerator followed by :3142 (example 192
 
 <strong><a name="generalTest"></a>3.1 General test</strong>
 
-What is tested:
+What is tested:<br>
 Sensors and refrigerator are executed on different machines. It is then examined whether the html file thats received from the refrigerator shows the correct entries. 
 
-How it is tested:
+How it is tested:<br>
 Required: Two machines 1 and 2 that are in the same network. <br>
 Parameters in sensors.sh and refrigerator.sh are set as described below. <br>
 refrigerator.sh is started on machine 1. <br>
